@@ -1,5 +1,5 @@
 
-
+import traceback
 from fastapi import APIRouter, Depends, HTTPException
 from uuid import uuid4
 
@@ -72,7 +72,6 @@ def confirmbooking(
     seats_number: str,
     current_user=Depends(get_current_user)
 ):
-
     seat_id = supabase.table("flight_seats") \
         .select("id") \
         .eq("flight_id", flight_id) \
@@ -115,12 +114,28 @@ def confirmbooking(
         if not booking.data:
             raise Exception("Booking insert returned no data")
 
-    except Exception:
-        # Restore availability if booking insertion fails
-        supabase.table("flight_seats") \
-            .update({"is_booked": False}) \
-            .eq("id", actual_seat_id) \
-            .execute()
+    except Exception as e:
+        # Print the actual error in Render Logs
+        print(
+            "CONFIRM BOOKING INSERT ERROR:",
+            repr(e),
+            flush=True
+        )
+        traceback.print_exc()
+
+        # Restore the seat if the booking insert failed
+        try:
+            supabase.table("flight_seats") \
+                .update({"is_booked": False}) \
+                .eq("id", actual_seat_id) \
+                .execute()
+        except Exception as rollback_error:
+            print(
+                "SEAT ROLLBACK ERROR:",
+                repr(rollback_error),
+                flush=True
+            )
+            traceback.print_exc()
 
         raise HTTPException(
             status_code=500,
@@ -133,7 +148,6 @@ def confirmbooking(
         "booking_reference": booking_reference,
         "user_id": current_user["id"]
     }
-
 
 
 
