@@ -46,6 +46,7 @@ def get_booking(flight_number: str, adults: int, children: int):
     total_price = (adults * adult_price) + (children * child_price)
 
     final_response = {
+        "flight_id": flight_data["id"],
         "flight_number": flight_data["flight_number"],
         "airline": airline_name,
         "source": flight_data["source_airport_id"],
