@@ -9,7 +9,7 @@ import {
   useMap,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import "../Flights.css";
+import "../flights.css";
 import { logout } from "../Logout";
 const airportCoordinates = {
   CCU: [22.6547, 88.4467],
