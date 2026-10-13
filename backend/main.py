@@ -17,8 +17,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
-        "https://flighttfinderr.vercel.app/",
-        "https://flighttfinderr-mrdvc9615-arkagangulyghs-projects.vercel.app/",
+        "https://flighttfinderr.vercel.app",
+        "https://flighttfinderr-mrdvc9615-arkagangulyghs-projects.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
